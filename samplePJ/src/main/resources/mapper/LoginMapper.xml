@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.LoginMapper">
+
+    <select id="findByUsername"
+            parameterType="string"
+            resultType="com.example.demo.entity.Login">
+        SELECT
+            id,
+            username,
+            password,
+            created_at AS createdAt,
+            updated_at AS updatedAt
+        FROM login
+        WHERE username = #{username}
+    </select>
+
+    <insert id="save"
+            parameterType="com.example.demo.entity.Login">
+        INSERT INTO login (
+            username,
+            password
+        ) VALUES (
+            #{username},
+            #{password}
+        )
+    </insert>
+
+</mapper>
