@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Login;
 import com.example.demo.service.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,11 +10,13 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private LoginService loginService;
+    private final LoginService loginService;
+    private final HttpSession session;
 
-    @Autowired
-    private HttpSession session;
+    public LoginController(LoginService loginService, HttpSession session) {
+        this.loginService = loginService;
+        this.session = session;
+    }
 
     // ユーザー登録画面を表示
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -50,9 +51,7 @@ public class LoginController {
     public ModelAndView login(@RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "password", required = false) String password, ModelAndView mv) {
 
-        Login login = loginService.findByUsername(username);
-
-        if (login == null || !login.getPassword().equals(password)) {
+        if (username == null || password == null || !loginService.authenticate(username, password)) {
             mv.addObject("error", "ユーザー名またはパスワードが間違っています");
             mv.setViewName("login");
             return mv;
@@ -62,11 +61,11 @@ public class LoginController {
         mv.setViewName("redirect:/tasks");
         return mv;
     }
-    
+
     // ログアウト処理
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.invalidate();
         return "redirect:/login";
-    }    
+    }
 }
