@@ -22,7 +22,6 @@
 	</select>
 
 	<select id="findById"
-		parameterType="long"
 		resultType="com.example.demo.entity.Task">
 		SELECT
 		id,
@@ -36,7 +35,8 @@
 		updated_at AS updatedAt
 		FROM tasks
 		WHERE id = #{id}
-	</select>
+		AND username = #{username}
+</select>
 
 	<insert id="save"
 		parameterType="com.example.demo.entity.Task">
@@ -68,13 +68,15 @@
 		end_date = #{endDate},
 		updated_at = date_trunc('second', now())
 		WHERE id = #{id}
-	</update>
+		AND username = #{username}
+</update>
 
-	<delete id="deleteById"
-		parameterType="long">
+	<delete id="deleteById">
 		DELETE FROM tasks
 		WHERE id = #{id}
-	</delete>
+		AND username = #{username}
+</delete>
+
 	<select id="findByPage"
 		resultType="com.example.demo.entity.Task">
 		SELECT

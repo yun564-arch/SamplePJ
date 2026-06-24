@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Task;
 import com.example.demo.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,35 +11,30 @@ import java.util.List;
 @Controller
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final HttpSession session;
 
-    @Autowired
-    private HttpSession session;
+    public TaskController(TaskService taskService, HttpSession session) {
+        this.taskService = taskService;
+        this.session = session;
+    }
 
     // タスク一覧表示
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
     public ModelAndView tasks(
             @RequestParam(name = "page", defaultValue = "1") int page,
             ModelAndView mv) {
-
         String username = (String) session.getAttribute("username");
-
         int size = 10;
-
         List<Task> taskList = taskService.findByPage(username, page, size);
-
         int totalCount = taskService.countByUsername(username);
         int totalPages = (int) Math.ceil((double) totalCount / size);
-
         mv.addObject("tasks", taskList);
         mv.addObject("currentPage", page);
         mv.addObject("totalPages", totalPages);
-
         mv.setViewName("tasks/list");
         return mv;
     }
-    
 
     // 新規タスク登録フォーム表示
     @RequestMapping(value = "/tasks/new", method = RequestMethod.GET)
@@ -55,7 +49,6 @@ public class TaskController {
         try {
             String username = (String) session.getAttribute("username");
             task.setUsername(username);
-
             taskService.save(task);
             mv.setViewName("redirect:/tasks");
         } catch (IllegalArgumentException error) {
@@ -65,21 +58,24 @@ public class TaskController {
         }
         return mv;
     }
-    
 
-    // タスク編集フォーム表示
+    // タスク編集フォーム表示(所有者チェック付き)
     @RequestMapping(value = "/tasks/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView editTask(@PathVariable("id") Long id, ModelAndView mv) {        Task task = taskService.findById(id);
+    public ModelAndView editTask(@PathVariable("id") Long id, ModelAndView mv) {
+        String username = (String) session.getAttribute("username");
+        Task task = taskService.findById(id, username); // 見つからなければ例外がスローされる
         mv.addObject("task", task);
         mv.setViewName("tasks/form-edit");
         return mv;
     }
 
-    // タスク更新処理
+    // タスク更新処理(所有者チェック付き)
     @RequestMapping(value = "/tasks/update/{id}", method = RequestMethod.POST)
     public ModelAndView updateTask(@PathVariable("id") Long id, @ModelAttribute Task task, ModelAndView mv) {
-    
         try {
+            String username = (String) session.getAttribute("username");
+            task.setId(id);
+            task.setUsername(username); // 所有者チェックのためusernameをセット
             taskService.update(task);
             mv.setViewName("redirect:/tasks");
         } catch (IllegalArgumentException error) {
@@ -90,10 +86,11 @@ public class TaskController {
         return mv;
     }
 
-    // タスク削除処理
+    // タスク削除処理(所有者チェック付き)
     @RequestMapping(value = "/tasks/delete/{id}", method = RequestMethod.POST)
     public String deleteTask(@PathVariable("id") Long id) {
-        taskService.deleteById(id);
+        String username = (String) session.getAttribute("username");
+        taskService.deleteById(id, username); // 見つからなければ例外がスローされる
         return "redirect:/tasks";
     }
 }
