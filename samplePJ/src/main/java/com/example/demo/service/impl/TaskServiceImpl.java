@@ -6,8 +6,10 @@ import com.example.demo.mapper.TaskMapper;
 import com.example.demo.service.TaskService;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class TaskServiceImpl implements TaskService {
 
     private final TaskMapper taskMapper;
@@ -17,11 +19,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     // タスク一覧を取得するメソッド
+    @Transactional(readOnly = true)
     public List<Task> findAll(String username) {
         return taskMapper.findByAll(username);
     }
 
     // タスクを1件取得するメソッド(所有者チェック付き、見つからなければ例外)
+    @Transactional(readOnly = true)
     public Task findById(Long id, String username) {
         Task task = taskMapper.findById(id, username);
         if (task == null) {
@@ -67,12 +71,14 @@ public class TaskServiceImpl implements TaskService {
 
     //ページング機能
     @Override
+    @Transactional(readOnly = true)
     public List<Task> findByPage(String username, int page, int size) {
         int offset = (page - 1) * size;
         return taskMapper.findByPage(username, size, offset);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int countByUsername(String username) {
         return taskMapper.countByUsername(username);
     }

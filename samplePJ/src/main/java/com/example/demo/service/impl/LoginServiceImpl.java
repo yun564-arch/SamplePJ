@@ -5,8 +5,10 @@ import com.example.demo.mapper.LoginMapper;
 import com.example.demo.service.LoginService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class LoginServiceImpl implements LoginService {
 
     private final LoginMapper loginMapper;
@@ -17,11 +19,11 @@ public class LoginServiceImpl implements LoginService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional(readOnly = true)
     public Login findByUsername(String username) {
         return loginMapper.findByUsername(username);
     }
 
-    // ログイン・登録共通の入力チェック
     private void validateLogin(Login login) {
         if (login.getUsername() == null || login.getUsername().isEmpty()) {
             throw new IllegalArgumentException("ユーザー名を入力してください");
@@ -37,7 +39,6 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 
-    // 登録専用チェック(共通チェック + 重複チェック)
     private void validateRegister(Login login) {
         validateLogin(login);
         if (loginMapper.findByUsername(login.getUsername()) != null) {
@@ -47,11 +48,10 @@ public class LoginServiceImpl implements LoginService {
 
     public void save(Login login) {
         validateRegister(login);
-        login.setPassword(passwordEncoder.encode(login.getPassword())); // ハッシュ化してから保存
+        login.setPassword(passwordEncoder.encode(login.getPassword()));
         loginMapper.save(login);
     }
 
-    // ログイン認証をServiceに集約
     public boolean authenticate(String username, String rawPassword) {
         Login login = loginMapper.findByUsername(username);
         if (login == null) {
