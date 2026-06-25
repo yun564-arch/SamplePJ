@@ -6,149 +6,71 @@
     <title>タスク登録</title>
 
     <style>
+        /* (既存のスタイルはそのまま) */
         body {
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             margin: 25px;
             color: #222;
         }
-
-        h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        .error {
-            color: red;
-            margin-bottom: 15px;
-        }
-
-        .form-area {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        label {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .input-box {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #dddddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        textarea.input-box {
-            min-height: 90px;
-            resize: vertical;
-        }
-
-        .button-area {
-            margin-top: 25px;
-            display: flex;
-            gap: 8px;
-        }
-
-        .submit-btn {
-            background-color:#198754;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .submit-btn:hover {
-            opacity: 0.9;
-        }
-
-        .cancel-btn {
-            background-color: #6c757d;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cancel-btn:hover {
-            opacity: 0.9;
-        }
+        h1 { font-size: 32px; margin-bottom: 20px; }
+        .error { color: red; margin-bottom: 15px; }
+        .field-error { color: red; font-size: 14px; margin-top: 4px; display: block; }
+        .form-area { display: flex; flex-direction: column; gap: 18px; }
+        label { display: block; font-size: 16px; margin-bottom: 8px; font-weight: bold; }
+        .input-box { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #dddddd; border-radius: 5px; box-sizing: border-box; }
+        textarea.input-box { min-height: 90px; resize: vertical; }
+        .button-area { margin-top: 25px; display: flex; gap: 8px; }
+        .submit-btn { background-color:#198754; color: white; border: none; padding: 10px 16px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .submit-btn:hover { opacity: 0.9; }
+        .cancel-btn { background-color: #6c757d; color: white; padding: 10px 16px; border-radius: 5px; text-decoration: none; display: inline-block; }
+        .cancel-btn:hover { opacity: 0.9; }
     </style>
-
 </head>
 
 <body>
 
     <h1>タスク登録</h1>
 
-    <div class="error"
-         th:if="${error}"
-         th:text="${error}">
-    </div>
+    <div class="error" th:if="${error}" th:text="${error}"></div>
 
-    <form th:action="@{/tasks}" method="post">
+    <form th:action="@{/tasks}" method="post" th:object="${task}">
 
         <div class="form-area">
 
             <div>
                 <label>タイトル</label>
-                <input type="text"
-                       name="title"
-                       class="input-box">
+                <input type="text" th:field="*{title}" class="input-box">
+                <span class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
             </div>
 
             <div>
                 <label>内容</label>
-                <textarea name="content"
-                          class="input-box"></textarea>
+                <textarea th:field="*{content}" class="input-box"></textarea>
             </div>
 
             <div>
                 <label>登録者</label>
-                <input type="text"
-                       name="name"
-                       class="input-box">
+                <input type="text" th:field="*{name}" class="input-box">
             </div>
 
             <div>
                 <label>開始日</label>
-                <input type="date"
-                       name="startDate"
-                       class="input-box">
+                <input type="date" th:field="*{startDate}" class="input-box">
             </div>
 
             <div>
                 <label>終了日</label>
-                <input type="date"
-                       name="endDate"
-                       class="input-box">
+                <input type="date" th:field="*{endDate}" class="input-box">
             </div>
 
         </div>
 
         <div class="button-area">
-            <button type="submit"
-                    class="submit-btn">
-                登録
-            </button>
-
-            <a th:href="@{/tasks}"
-               class="cancel-btn">
-                ← キャンセル
-            </a>
+            <button type="submit" class="submit-btn">登録</button>
+            <a th:href="@{/tasks}" class="cancel-btn">← キャンセル</a>
         </div>
 
     </form>
 
 </body>
-
 </html>
-
