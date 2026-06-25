@@ -81,7 +81,8 @@
 
 		<div class="card">
 			<!-- エラーメッセージ -->
-			<div class="error" th:if="${error}" th:text="${error}">
+			<div class="error" th:if="${param.error}">
+			    ユーザー名またはパスワードが間違っています
 			</div>
 
 			<form th:action="@{/login}" method="post">

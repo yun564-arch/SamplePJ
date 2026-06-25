@@ -45,27 +45,4 @@ public class LoginController {
         mv.setViewName("login");
         return mv;
     }
-
-    // ログイン処理
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(@RequestParam(name = "username", required = false) String username,
-            @RequestParam(name = "password", required = false) String password, ModelAndView mv) {
-
-        if (username == null || password == null || !loginService.authenticate(username, password)) {
-            mv.addObject("error", "ユーザー名またはパスワードが間違っています");
-            mv.setViewName("login");
-            return mv;
-        }
-
-        session.setAttribute("username", username);
-        mv.setViewName("redirect:/tasks");
-        return mv;
-    }
-
-    // ログアウト処理
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout() {
-        session.invalidate();
-        return "redirect:/login";
-    }
 }

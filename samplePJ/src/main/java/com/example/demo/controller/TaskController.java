@@ -5,26 +5,24 @@ import com.example.demo.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import jakarta.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class TaskController {
 
     private final TaskService taskService;
-    private final HttpSession session;
 
-    public TaskController(TaskService taskService, HttpSession session) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.session = session;
     }
 
     // タスク一覧表示
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
     public ModelAndView tasks(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            ModelAndView mv) {
-        String username = (String) session.getAttribute("username");
+            Principal principal, ModelAndView mv) {
+        String username = principal.getName();
         int size = 10;
         List<Task> taskList = taskService.findByPage(username, page, size);
         int totalCount = taskService.countByUsername(username);
@@ -36,19 +34,16 @@ public class TaskController {
         return mv;
     }
 
-    // 新規タスク登録フォーム表示
     @RequestMapping(value = "/tasks/new", method = RequestMethod.GET)
     public ModelAndView newTask(ModelAndView mv) {
         mv.setViewName("tasks/form-new");
         return mv;
     }
 
-    // 新規タスク登録処理
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
-    public ModelAndView tasks(@ModelAttribute Task task, ModelAndView mv) {
+    public ModelAndView tasks(@ModelAttribute Task task, Principal principal, ModelAndView mv) {
         try {
-            String username = (String) session.getAttribute("username");
-            task.setUsername(username);
+            task.setUsername(principal.getName());
             taskService.save(task);
             mv.setViewName("redirect:/tasks");
         } catch (IllegalArgumentException error) {
@@ -59,23 +54,20 @@ public class TaskController {
         return mv;
     }
 
-    // タスク編集フォーム表示(所有者チェック付き)
     @RequestMapping(value = "/tasks/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView editTask(@PathVariable("id") Long id, ModelAndView mv) {
-        String username = (String) session.getAttribute("username");
-        Task task = taskService.findById(id, username); // 見つからなければ例外がスローされる
+    public ModelAndView editTask(@PathVariable("id") Long id, Principal principal, ModelAndView mv) {
+        Task task = taskService.findById(id, principal.getName());
         mv.addObject("task", task);
         mv.setViewName("tasks/form-edit");
         return mv;
     }
 
-    // タスク更新処理(所有者チェック付き)
     @RequestMapping(value = "/tasks/update/{id}", method = RequestMethod.POST)
-    public ModelAndView updateTask(@PathVariable("id") Long id, @ModelAttribute Task task, ModelAndView mv) {
+    public ModelAndView updateTask(@PathVariable("id") Long id, @ModelAttribute Task task,
+            Principal principal, ModelAndView mv) {
         try {
-            String username = (String) session.getAttribute("username");
             task.setId(id);
-            task.setUsername(username); // 所有者チェックのためusernameをセット
+            task.setUsername(principal.getName());
             taskService.update(task);
             mv.setViewName("redirect:/tasks");
         } catch (IllegalArgumentException error) {
@@ -86,11 +78,9 @@ public class TaskController {
         return mv;
     }
 
-    // タスク削除処理(所有者チェック付き)
     @RequestMapping(value = "/tasks/delete/{id}", method = RequestMethod.POST)
-    public String deleteTask(@PathVariable("id") Long id) {
-        String username = (String) session.getAttribute("username");
-        taskService.deleteById(id, username); // 見つからなければ例外がスローされる
+    public String deleteTask(@PathVariable("id") Long id, Principal principal) {
+        taskService.deleteById(id, principal.getName());
         return "redirect:/tasks";
     }
 }

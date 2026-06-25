@@ -113,7 +113,11 @@
 	<h1>タスク一覧</h1>
 	
 	<div style="text-align: right; margin-bottom: 20px;">
-	    <a th:href="@{/logout}">ログアウト</a>
+		<form th:action="@{/logout}" method="post" style="display:inline;">
+		    <button type="submit" class="logout-btn" style="border:none; cursor:pointer;">
+		        ログアウト
+		    </button>
+		</form>
 	</div>
 
 	<div class="no-task-message" th:if="${#lists.isEmpty(tasks)}">
@@ -140,8 +144,8 @@
 			<td th:text="${task.name}"></td>
 			<td th:text="${task.startDate}"></td>
 			<td th:text="${task.endDate}"></td>
-			<td th:text="${task.createdAt}"></td>
-			<td th:text="${task.updatedAt}"></td>
+			<td th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
+			<td th:text="${#temporals.format(task.updatedAt, 'yyyy/MM/dd HH:mm')}"></td>
 
 			<td>
 				<a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="edit-btn">
