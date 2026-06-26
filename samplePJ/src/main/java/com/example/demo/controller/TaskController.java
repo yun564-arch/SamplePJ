@@ -13,6 +13,8 @@ import java.util.List;
 @Controller
 public class TaskController {
 
+    private static final int PAGE_SIZE = 10;
+
     private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
@@ -24,10 +26,9 @@ public class TaskController {
             @RequestParam(name = "page", defaultValue = "1") int page,
             Principal principal, ModelAndView mv) {
         String username = principal.getName();
-        int size = 10;
-        List<Task> taskList = taskService.findByPage(username, page, size);
+        List<Task> taskList = taskService.findByPage(username, page, PAGE_SIZE);
         int totalCount = taskService.countByUsername(username);
-        int totalPages = (int) Math.ceil((double) totalCount / size);
+        int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
         mv.addObject("tasks", taskList);
         mv.addObject("currentPage", page);
         mv.addObject("totalPages", totalPages);

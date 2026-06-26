@@ -18,11 +18,6 @@ public class TaskServiceImpl implements TaskService {
         this.taskMapper = taskMapper;
     }
 
-    // タスク一覧を取得するメソッド
-    @Transactional(readOnly = true)
-    public List<Task> findAll(String username) {
-        return taskMapper.findByAll(username);
-    }
 
     // タスクを1件取得するメソッド(所有者チェック付き、見つからなければ例外)
     @Transactional(readOnly = true)

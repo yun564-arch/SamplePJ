@@ -8,8 +8,7 @@ import com.example.demo.entity.Task;
 @Mapper
 public interface TaskMapper {
 
-    // タスク一覧を取得するメソッド
-    List<Task> findByAll(String username);
+
 
     // タスクを1件取得するメソッド(所有者チェック付き)
     Task findById(@Param("id") Long id, @Param("username") String username);

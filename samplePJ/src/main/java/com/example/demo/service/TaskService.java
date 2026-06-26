@@ -5,8 +5,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    // タスク一覧を取得するメソッド
-    List<Task> findAll(String username);
+   
 
     // タスクを1件取得するメソッド(所有者チェック付き)
     Task findById(Long id, String username);

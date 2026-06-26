@@ -16,13 +16,12 @@ public class Task {
     private String title;
 
     private String content;
-    private String name;
+    private String registrantName; // 変更: name → registrantName(タスク登録者の名前)
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // getter/setterは変更なし(既存のまま)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }
@@ -31,8 +30,8 @@ public class Task {
     public void setTitle(String title) { this.title = title; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getRegistrantName() { return registrantName; }
+    public void setRegistrantName(String registrantName) { this.registrantName = registrantName; }
     public LocalDate getStartDate() { return startDate; }
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public LocalDate getEndDate() { return endDate; }
