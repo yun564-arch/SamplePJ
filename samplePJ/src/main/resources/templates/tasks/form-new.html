@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>タスク登録</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <style>
+        body {
+            margin: 25px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .button-area {
+            margin-top: 25px;
+            display: flex;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>タスク登録</h1>
+
+    <div class="error" th:if="${error}" th:text="${error}"></div>
+
+    <form th:action="@{/tasks}" method="post" th:object="${task}">
+
+        <div class="form-area">
+
+            <div>
+                <label for="title">タイトル</label>
+                <input type="text" id="title" th:field="*{title}" class="input-box">
+                <span class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+            </div>
+
+            <div>
+                <label for="content">内容</label>
+                <textarea id="content" th:field="*{content}" class="input-box"></textarea>
+            </div>
+
+            <div>
+                <label for="registrantName">登録者</label>
+                <input type="text" id="registrantName" th:field="*{registrantName}" class="input-box">
+            </div>
+
+            <div>
+                <label for="startDate">開始日</label>
+                <input type="date" id="startDate" th:field="*{startDate}" class="input-box">
+            </div>
+
+            <div>
+                <label for="endDate">終了日</label>
+                <input type="date" id="endDate" th:field="*{endDate}" class="input-box">
+            </div>
+
+        </div>
+
+        <div class="button-area">
+            <button type="submit" class="btn btn-success">登録</button>
+            <a th:href="@{/tasks}" class="btn btn-secondary">← キャンセル</a>
+        </div>
+
+    </form>
+
+</body>
+</html>
