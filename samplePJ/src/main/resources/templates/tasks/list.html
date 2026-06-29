@@ -2,196 +2,149 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>タスク一覧</title>
+    <meta charset="UTF-8">
+    <title>タスク一覧</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 
-	<style>
-		body {
-			font-family: "Hiragino Sans", "Meiryo", sans-serif;
-			margin: 20px;
-			color: #222;
-		}
+    <style>
+        body {
+            margin: 20px;
+        }
 
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
 
-		h1 {
-			text-align: center;
-			font-size: 32px;
-			margin-bottom: 30px;
-		}
+        .no-task-message {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 18px;
+            color: #555555;
+            background-color: #d9f2ff;
+            border: 1px solid #99d6ff;
+            padding: 15px;
+            border-radius: 5px;
+        }
 
-		.no-task-message {
-			text-align: center;
-			margin-top: 40px;
-			font-size: 18px;
-			color: #555555;
-			
-			background-color: #d9f2ff;
-			 border: 1px solid #99d6ff;
-			 padding: 15px;
-			 border-radius: 5px;
-		}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-		table {
-			width: 100%;
-			border-collapse: collapse;
-		}
+        th {
+            background-color: #22272b;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+        }
 
-		th {
-			background-color: #22272b;
-			color: white;
-			padding: 12px 10px;
-			text-align: left;
-		}
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #dddddd;
+        }
 
-		td {
-			padding: 12px 10px;
-			border-bottom: 1px solid #dddddd;
-		}
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-		tr:nth-child(even) {
-			background-color: #f2f2f2;
-		}
+        .delete-form {
+            display: inline;
+        }
 
-		.edit-btn {
-			background-color: #007bff;
-			color: white;
-			padding: 8px 12px;
-			text-decoration: none;
-			border-radius: 4px;
-			display: inline-block;
-		}
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
 
-		.delete-form {
-			display: inline;
-		}
+        .pagination a,
+        .pagination span {
+            margin: 0 5px;
+        }
 
-		.delete-btn {
-			background-color: #dc3545;
-			color: white;
-			border: none;
-			padding: 8px 12px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-size: 16px;
-		}
-		.pagination {
-		    text-align: center;
-		    margin-top: 30px;
-		}
-
-		.pagination a,
-		.pagination span {
-		    margin: 0 5px;
-		}
-
-		.new-btn-area {
-			text-align: right;
-			margin-top: 30px;
-		}
-
-		.new-btn {
-			background-color: #198754;
-			color: white;
-			padding: 10px 16px;
-			text-decoration: none;
-			border-radius: 5px;
-			display: inline-block;
-			
-		}
-		.logout-btn {
-		    background-color: #6c757d;
-		    color: white;
-		    padding: 8px 12px;
-		    text-decoration: none;
-		    border-radius: 4px;
-		}
-	</style>
+        .new-btn-area {
+            text-align: right;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 
 <body>
 
-	<h1>タスク一覧</h1>
-	
-	<div style="text-align: right; margin-bottom: 20px;">
-		<form th:action="@{/logout}" method="post" style="display:inline;">
-		    <button type="submit" class="logout-btn" style="border:none; cursor:pointer;">
-		        ログアウト
-		    </button>
-		</form>
-	</div>
+    <h1>タスク一覧</h1>
 
-	<div class="no-task-message" th:if="${#lists.isEmpty(tasks)}">
-		📪現在タスクは登録されていません。「新規作成」から追加してください。
-	</div>
+    <div class="text-center" style="text-align: right; margin-bottom: 20px;">
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-secondary">
+                ログアウト
+            </button>
+        </form>
+    </div>
 
-	<table th:if="${!#lists.isEmpty(tasks)}">
-		<tr>
-			<th>ID</th>
-			<th>タイトル</th>
-			<th>内容</th>
-			<th>登録者</th>
-			<th>開始日</th>
-			<th>終了日</th>
-			<th>作成日時</th>
-			<th>更新日時</th>
-			<th>操作</th>
-		</tr>
+    <div class="no-task-message" th:if="${#lists.isEmpty(tasks)}">
+        📪現在タスクは登録されていません。「新規作成」から追加してください。
+    </div>
 
-		<tr th:each="task : ${tasks}">
-			<td th:text="${task.id}"></td>
-			<td th:text="${task.title}"></td>
-			<td th:text="${task.content}"></td>
-			<td th:text="${task.registrantName}"></td>
-			<td th:text="${task.startDate}"></td>
-			<td th:text="${task.endDate}"></td>
-			<td th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
-			<td th:text="${#temporals.format(task.updatedAt, 'yyyy/MM/dd HH:mm')}"></td>
+    <table th:if="${!#lists.isEmpty(tasks)}">
+        <tr>
+            <th>ID</th>
+            <th>タイトル</th>
+            <th>内容</th>
+            <th>登録者</th>
+            <th>開始日</th>
+            <th>終了日</th>
+            <th>作成日時</th>
+            <th>更新日時</th>
+            <th>操作</th>
+        </tr>
 
-			<td>
-				<a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="edit-btn">
-					編集
-				</a>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.content}"></td>
+            <td th:text="${task.registrantName}"></td>
+            <td th:text="${task.startDate}"></td>
+            <td th:text="${task.endDate}"></td>
+            <td th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(task.updatedAt, 'yyyy/MM/dd HH:mm')}"></td>
 
-				<form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post" class="delete-form">
-					<button type="submit" class="delete-btn">
-						削除
-					</button>
-				</form>
-			</td>
-		</tr>
-	</table>
-	
-	<div class="pagination"
-	     th:if="${totalPages > 1}">
+            <td>
+                <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-primary">
+                    編集
+                </a>
 
-	    <a th:if="${currentPage > 1}"
-	       th:href="@{/tasks(page=${currentPage - 1})}">
-	        前へ
-	    </a>
+                <form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post" class="delete-form">
+                    <button type="submit" class="btn btn-danger">
+                        削除
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
 
-	    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-	        <a th:if="${i != currentPage}"
-	           th:href="@{/tasks(page=${i})}"
-	           th:text="${i}">
-	        </a>
+    <div class="pagination" th:if="${totalPages > 1}">
 
-	        <span th:if="${i == currentPage}"
-	              th:text="${i}">
-	        </span>
-	    </span>
+        <a th:if="${currentPage > 1}" th:href="@{/tasks(page=${currentPage - 1})}">
+            前へ
+        </a>
 
-	    <a th:if="${currentPage < totalPages}"
-	       th:href="@{/tasks(page=${currentPage + 1})}">
-	        次へ
-	    </a>
+        <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${i != currentPage}" th:href="@{/tasks(page=${i})}" th:text="${i}"></a>
+            <span th:if="${i == currentPage}" th:text="${i}"></span>
+        </span>
 
-	</div>
+        <a th:if="${currentPage < totalPages}" th:href="@{/tasks(page=${currentPage + 1})}">
+            次へ
+        </a>
 
-	<div class="new-btn-area">
-		<a th:href="@{/tasks/new}" class="new-btn">
-			＋ 新規作成
-		</a>
-	</div>
+    </div>
+
+    <div class="new-btn-area">
+        <a th:href="@{/tasks/new}" class="btn btn-success">
+            ＋ 新規作成
+        </a>
+    </div>
 
 </body>
 

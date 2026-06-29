@@ -4,20 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>タスク編集</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 
     <style>
-        body { font-family: "Hiragino Sans", "Meiryo", sans-serif; margin: 25px; color: #222; }
-        h1 { font-size: 32px; margin-bottom: 20px; }
-        .error { color: red; margin-bottom: 15px; }
-        .field-error { color: red; font-size: 14px; margin-top: 4px; display: block; }
-        .form-area { display: flex; flex-direction: column; gap: 18px; }
-        label { display: block; font-size: 16px; margin-bottom: 8px; font-weight: bold; }
-        .readonly-id { padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 20px; }
-        .input-box { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #dddddd; border-radius: 5px; box-sizing: border-box; }
-        textarea.input-box { min-height: 90px; resize: vertical; }
-        .button-area { margin-top: 25px; display: flex; gap: 8px; }
-        .update-btn { background-color: #0d6efd; color: white; border: none; padding: 10px 16px; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        .cancel-btn { background-color: #6c757d; color: white; padding: 10px 16px; border-radius: 5px; text-decoration: none; display: inline-block; }
+        body {
+            margin: 25px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .button-area {
+            margin-top: 25px;
+            display: flex;
+            gap: 8px;
+        }
     </style>
 </head>
 
@@ -32,36 +35,36 @@
         <div class="form-area">
 
             <div>
-                <label>タイトル</label>
-                <input type="text" th:field="*{title}" class="input-box">
+                <label for="title">タイトル</label>
+                <input type="text" id="title" th:field="*{title}" class="input-box">
                 <span class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
             </div>
 
             <div>
-                <label>内容</label>
-                <textarea th:field="*{content}" class="input-box"></textarea>
+                <label for="content">内容</label>
+                <textarea id="content" th:field="*{content}" class="input-box"></textarea>
             </div>
 
             <div>
-                <label>登録者</label>
-                <input type="text" th:field="*{registrantName}" class="input-box">
+                <label for="registrantName">登録者</label>
+                <input type="text" id="registrantName" th:field="*{registrantName}" class="input-box">
             </div>
 
             <div>
-                <label>開始日</label>
-                <input type="date" th:field="*{startDate}" class="input-box">
+                <label for="startDate">開始日</label>
+                <input type="date" id="startDate" th:field="*{startDate}" class="input-box">
             </div>
 
             <div>
-                <label>終了日</label>
-                <input type="date" th:field="*{endDate}" class="input-box">
+                <label for="endDate">終了日</label>
+                <input type="date" id="endDate" th:field="*{endDate}" class="input-box">
             </div>
 
         </div>
 
         <div class="button-area">
-            <button type="submit" class="update-btn">更新</button>
-            <a th:href="@{/tasks}" class="cancel-btn">← キャンセル</a>
+            <button type="submit" class="btn btn-primary">更新</button>
+            <a th:href="@{/tasks}" class="btn btn-secondary">← キャンセル</a>
         </div>
 
     </form>
