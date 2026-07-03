@@ -15,7 +15,7 @@ CREATE TABLE login (
 -- タスク情報テーブル
 CREATE TABLE tasks (
   id BIGSERIAL PRIMARY KEY,
-  username varchar(50) NOT NULL,
+  username varchar(50) NOT NULL REFERENCES login(username),
   title varchar(255) NOT NULL,
   content TEXT,
   name varchar(100),
@@ -24,3 +24,6 @@ CREATE TABLE tasks (
   created_at TIMESTAMP DEFAULT date_trunc('second', now()),
   updated_at TIMESTAMP DEFAULT date_trunc('second', now())
 );
+
+-- INDEXの追加
+CREATE INDEX idx_tasks_username ON tasks(username);
