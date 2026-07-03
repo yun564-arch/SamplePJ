@@ -52,11 +52,4 @@ public class LoginServiceImpl implements LoginService {
         loginMapper.save(login);
     }
 
-    public boolean authenticate(String username, String rawPassword) {
-        Login login = loginMapper.findByUsername(username);
-        if (login == null) {
-            return false;
-        }
-        return passwordEncoder.matches(rawPassword, login.getPassword());
-    }
 }

@@ -10,7 +10,6 @@ public interface LoginService {
     // ユーザーを登録するメソッド
     void save(Login login);
 
-    // ユーザー名とパスワードで認証するメソッド
-    boolean authenticate(String username, String rawPassword);
+    
 
 }
