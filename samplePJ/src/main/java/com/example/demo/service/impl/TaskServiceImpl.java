@@ -29,17 +29,14 @@ public class TaskServiceImpl implements TaskService {
         return task;
     }
 
-    // 入力チェック用の共通メソッド
+ // 入力チェック用の共通メソッド(日付相関チェックはControllerのBindingResultに移動)
     private void validate(Task task) {
         if (task.getTitle() == null || task.getTitle().isEmpty()) {
             throw new IllegalArgumentException("タイトルを入力してください");
         }
-        if (task.getStartDate() != null && task.getEndDate() != null) {
-            if (task.getStartDate().isAfter(task.getEndDate())) {
-                throw new IllegalArgumentException("開始日は終了日より前にしてください");
-            }
-        }
+        // 日付相関チェックを削除(ControllerのvalidateDateRange()で対応)
     }
+        
 
     // タスクを登録するメソッド
     public void save(Task task) {

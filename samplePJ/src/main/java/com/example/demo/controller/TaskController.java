@@ -14,7 +14,6 @@ import java.util.List;
 public class TaskController {
 
     private static final int PAGE_SIZE = 10;
-
     private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
@@ -39,7 +38,7 @@ public class TaskController {
     // 新規タスク登録フォーム表示
     @RequestMapping(value = "/tasks/new", method = RequestMethod.GET)
     public ModelAndView newTask(ModelAndView mv) {
-        mv.addObject("task", new Task()); // th:objectで使う空のTaskを渡す
+        mv.addObject("task", new Task());
         mv.setViewName("tasks/form-new");
         return mv;
     }
@@ -48,18 +47,17 @@ public class TaskController {
     @RequestMapping(value = "/tasks", method = RequestMethod.POST)
     public ModelAndView tasks(@Valid @ModelAttribute("task") Task task,
             BindingResult bindingResult, Principal principal, ModelAndView mv) {
+
+        // 日付相関チェック(Bean Validationの後に行う)
+        validateDateRange(task, bindingResult);
+
         if (bindingResult.hasErrors()) {
             mv.setViewName("tasks/form-new");
             return mv;
         }
-        try {
-            task.setUsername(principal.getName());
-            taskService.save(task);
-            mv.setViewName("redirect:/tasks");
-        } catch (IllegalArgumentException error) {
-            mv.addObject("error", error.getMessage());
-            mv.setViewName("tasks/form-new");
-        }
+        task.setUsername(principal.getName());
+        taskService.save(task);
+        mv.setViewName("redirect:/tasks");
         return mv;
     }
 
@@ -71,23 +69,23 @@ public class TaskController {
         return mv;
     }
 
+    // タスク更新処理
     @RequestMapping(value = "/tasks/update/{id}", method = RequestMethod.POST)
     public ModelAndView updateTask(@PathVariable("id") Long id,
             @Valid @ModelAttribute("task") Task task, BindingResult bindingResult,
             Principal principal, ModelAndView mv) {
         task.setId(id);
+
+        // 日付相関チェック(Bean Validationの後に行う)
+        validateDateRange(task, bindingResult);
+
         if (bindingResult.hasErrors()) {
             mv.setViewName("tasks/form-edit");
             return mv;
         }
-        try {
-            task.setUsername(principal.getName());
-            taskService.update(task);
-            mv.setViewName("redirect:/tasks");
-        } catch (IllegalArgumentException error) {
-            mv.addObject("error", error.getMessage());
-            mv.setViewName("tasks/form-edit");
-        }
+        task.setUsername(principal.getName());
+        taskService.update(task);
+        mv.setViewName("redirect:/tasks");
         return mv;
     }
 
@@ -95,5 +93,18 @@ public class TaskController {
     public String deleteTask(@PathVariable("id") Long id, Principal principal) {
         taskService.deleteById(id, principal.getName());
         return "redirect:/tasks";
+    }
+
+    // 日付相関チェック(共通メソッド)
+    private void validateDateRange(Task task, BindingResult bindingResult) {
+        if (task.getStartDate() != null && task.getEndDate() != null) {
+            if (task.getStartDate().isAfter(task.getEndDate())) {
+                bindingResult.rejectValue(
+                    "endDate",
+                    "task.endDate.invalid",
+                    "終了日は開始日以降にしてください"
+                );
+            }
+        }
     }
 }
