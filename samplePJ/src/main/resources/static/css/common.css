@@ -99,3 +99,87 @@ textarea.input-box {
     margin-top: 20px;
     color: deepskyblue;
 }
+
+/* ===== タスク系ページ共通 ===== */
+.page-body {
+    margin: 25px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.button-area {
+    margin-top: 25px;
+    display: flex;
+    gap: 8px;
+}
+
+/* ===== タスク一覧 ===== */
+.header-area {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.logout-form {
+    display: inline;
+}
+
+.no-task-message {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    color: #555555;
+    background-color: #d9f2ff;
+    border: 1px solid #99d6ff;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #22272b;
+    color: white;
+    padding: 12px 10px;
+    text-align: left;
+}
+
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #dddddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.delete-form {
+    display: inline;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a,
+.pagination span {
+    margin: 0 5px;
+}
+
+.new-btn-area {
+    text-align: right;
+    margin-top: 30px;
+}
+
+/* ===== ログインページ ===== */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

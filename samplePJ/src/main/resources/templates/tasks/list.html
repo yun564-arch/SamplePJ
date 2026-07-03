@@ -5,77 +5,14 @@
     <meta charset="UTF-8">
     <title>タスク一覧</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-
-    <style>
-        body {
-            margin: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 32px;
-            margin-bottom: 30px;
-        }
-
-        .no-task-message {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 18px;
-            color: #555555;
-            background-color: #d9f2ff;
-            border: 1px solid #99d6ff;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #22272b;
-            color: white;
-            padding: 12px 10px;
-            text-align: left;
-        }
-
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #dddddd;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .delete-form {
-            display: inline;
-        }
-
-        .pagination {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .pagination a,
-        .pagination span {
-            margin: 0 5px;
-        }
-
-        .new-btn-area {
-            text-align: right;
-            margin-top: 30px;
-        }
-    </style>
 </head>
 
 <body>
 
     <h1>タスク一覧</h1>
 
-    <div class="text-center" style="text-align: right; margin-bottom: 20px;">
-        <form th:action="@{/logout}" method="post" style="display:inline;">
+    <div class="header-area">
+        <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="btn btn-secondary">
                 ログアウト
             </button>
@@ -113,7 +50,6 @@
                 <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-primary">
                     編集
                 </a>
-
                 <form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post" class="delete-form">
                     <button type="submit" class="btn btn-danger">
                         削除
@@ -124,20 +60,14 @@
     </table>
 
     <div class="pagination" th:if="${totalPages > 1}">
-
-        <a th:if="${currentPage > 1}" th:href="@{/tasks(page=${currentPage - 1})}">
-            前へ
-        </a>
+        <a th:if="${currentPage > 1}" th:href="@{/tasks(page=${currentPage - 1})}">前へ</a>
 
         <span th:each="i : ${#numbers.sequence(1, totalPages)}">
             <a th:if="${i != currentPage}" th:href="@{/tasks(page=${i})}" th:text="${i}"></a>
             <span th:if="${i == currentPage}" th:text="${i}"></span>
         </span>
 
-        <a th:if="${currentPage < totalPages}" th:href="@{/tasks(page=${currentPage + 1})}">
-            次へ
-        </a>
-
+        <a th:if="${currentPage < totalPages}" th:href="@{/tasks(page=${currentPage + 1})}">次へ</a>
     </div>
 
     <div class="new-btn-area">
