@@ -49,16 +49,19 @@
                 <label for="registrantName">登録者</label>
                 <input type="text" id="registrantName" th:field="*{registrantName}" class="input-box">
             </div>
+			
+			<div>
+			    <label for="startDate">開始日</label>
+			    <input type="date" id="startDate" th:field="*{startDate}" class="input-box">
+			</div>
 
-            <div>
-                <label for="startDate">開始日</label>
-                <input type="date" id="startDate" th:field="*{startDate}" class="input-box">
-            </div>
+			<div>
+			    <label for="endDate">終了日</label>
+			    <input type="date" id="endDate" th:field="*{endDate}" class="input-box">
+			    <span class="field-error" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
+			</div>
 
-            <div>
-                <label for="endDate">終了日</label>
-                <input type="date" id="endDate" th:field="*{endDate}" class="input-box">
-            </div>
+          
 
         </div>
 
