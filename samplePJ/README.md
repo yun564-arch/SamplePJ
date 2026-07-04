@@ -71,6 +71,8 @@ psql -U あなたのDBユーザー名 -d todo_app -f src/main/resources/db/schem
 
 または、pgAdmin4のQuery Toolに`src/main/resources/db/schema.sql`の内容を貼り付けて実行してください。
 
+> `schema.sql`には`tasks.username`への外部キー制約(FK)とINDEXが含まれています。
+
 ---
 
 ## バリデーション
@@ -82,7 +84,7 @@ psql -U あなたのDBユーザー名 -d todo_app -f src/main/resources/db/schem
 
 ### タスク登録
 - タイトル必須
-- 終了日は開始日以降
+- 終了日は開始日以降(日付相関チェック、項目別エラー表示対応)
 
 Bean Validation(`@NotBlank`等)とThymeleafの`th:object`/`th:field`によるフォームバインディングで、項目ごとにエラーメッセージを表示します。
 
@@ -94,6 +96,7 @@ Bean Validation(`@NotBlank`等)とThymeleafの`th:object`/`th:field`によるフ
 - 全クラスでコンストラクタインジェクションを採用
 - Service層に`@Transactional`を付与(書き込み系/`readOnly`系を分離)
 - 業務例外(`TaskNotFoundException`)と`@ControllerAdvice`による例外の一元管理
+- 例外ログはSLF4Jロガーで出力(printStackTrace不使用)
 - SQLは`#{}`によるバインドでSQLインジェクション対策済み
 
 ---
@@ -102,7 +105,7 @@ Bean Validation(`@NotBlank`等)とThymeleafの`th:object`/`th:field`によるフ
 - Spring SecurityでログインガードとCSRF対策を実装
 - SQLのLIMIT/OFFSETを利用してページング機能を実装
 - ユーザーごとにタスクを管理できるよう、所有者チェックを徹底
-- 共通CSS(`common.css`)に切り出してスタイルの重複を解消
+- 共通CSS(`common.css`)に切り出してスタイルの重複を解消(inline style排除)
 - `label`の`for`属性を整備し、アクセシビリティに配慮
 
 ---
