@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body class="auth-page">
+    <div class="container">
+
+        <div class="title">
+            ログイン
+        </div>
+
+        <div class="card">
+            <div class="error text-center" th:if="${param.error}">
+                ユーザー名またはパスワードが間違っています
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-area">
+                    <label for="username">ユーザー名</label>
+                    <input type="text" id="username" name="username" class="input-box">
+
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" name="password" class="input-box">
+
+                    <button type="submit" class="btn btn-blue">
+                        ログイン
+                    </button>
+                </div>
+            </form>
+
+            <a th:href="@{/register}" class="link-text">
+                ユーザー登録はこちら
+            </a>
+        </div>
+
+    </div>
+</body>
+
+</html>

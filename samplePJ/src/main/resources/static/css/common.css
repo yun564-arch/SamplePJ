@@ -1,0 +1,185 @@
+/* ===== 全体共通 ===== */
+body {
+    font-family: "Hiragino Sans", "Meiryo", sans-serif;
+    color: #222;
+}
+
+.text-center {
+    text-align: center;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+    
+}
+
+.form-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+textarea.input-box {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.error {
+    color: red;
+    margin-bottom: 15px;
+}
+
+.field-error {
+    color: red;
+    font-size: 13px;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ===== ボタン共通 ===== */
+.btn {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.btn-blue { background-color: blue; }
+.btn-green { background-color: green; }
+.btn-primary { background-color: #0d6efd; }
+.btn-success { background-color: #198754; }
+.btn-danger { background-color: #dc3545; }
+.btn-secondary { background-color: #6c757d; }
+
+/* ===== ログイン/登録ページ共通 ===== */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 100px;
+    background-color: #f5f5f5;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #dddddd;
+    padding: 30px;
+    width: 350px;
+}
+
+.title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.link-text {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: deepskyblue;
+}
+
+/* ===== タスク系ページ共通 ===== */
+.page-body {
+    margin: 25px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.button-area {
+    margin-top: 25px;
+    display: flex;
+    gap: 8px;
+}
+
+/* ===== タスク一覧 ===== */
+.header-area {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.logout-form {
+    display: inline;
+}
+
+.no-task-message {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    color: #555555;
+    background-color: #d9f2ff;
+    border: 1px solid #99d6ff;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #22272b;
+    color: white;
+    padding: 12px 10px;
+    text-align: left;
+}
+
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #dddddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.delete-form {
+    display: inline;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a,
+.pagination span {
+    margin: 0 5px;
+}
+
+.new-btn-area {
+    text-align: right;
+    margin-top: 30px;
+}
+
+/* ===== ログインページ ===== */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

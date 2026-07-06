@@ -1,0 +1,93 @@
+<!-- templates/error/not-found.html -->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>404 - ページが見つかりません</title>
+
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 500px;
+        margin: 120px auto;
+    }
+
+    .card {
+        background-color: white;
+        padding: 40px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #e74c3c;
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+
+    .message {
+        color: #555;
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+
+    .detail {
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+    }
+
+    .btn:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+
+    <h1>404</h1>
+
+    <p class="message">
+        指定されたページまたはタスクが見つかりません。
+    </p>
+
+    <p class="detail" th:text="${message}">
+        タスクが存在しません。
+    </p>
+
+    <a class="btn" href="/tasks">
+        タスク一覧へ戻る
+    </a>
+
+</div>
+
+
+</div>
+
+</body>
+</html>
